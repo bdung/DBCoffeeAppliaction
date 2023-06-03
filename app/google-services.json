@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "679381508279",
+    "firebase_url": "https://coffeeappliaction-default-rtdb.firebaseio.com",
+    "project_id": "coffeeappliaction",
+    "storage_bucket": "coffeeappliaction.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679381508279:android:8225503a48c1a655ab2d32",
+        "android_client_info": {
+          "package_name": "com.example.dbcoffeeapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATWBsIFdUpwB1BUTeq1vD0fzNBeChrVyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
