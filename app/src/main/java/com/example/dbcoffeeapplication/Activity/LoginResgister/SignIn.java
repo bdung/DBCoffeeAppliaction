@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -35,9 +36,13 @@ import java.util.Locale;
 public class SignIn extends AppCompatActivity {
     private Button login;
     private EditText numberPhone, password;
-    private TextView regester,forgotPassword;
+    private TextView regester, forgotPassword;
     public DatabaseReference databaseReference;
-    public void initLogin(){
+    CheckBox checkSave;
+    String saveUser = "phone_password";
+    boolean checkedVisibles = true;
+
+    public void initLogin() {
         login.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -48,6 +53,7 @@ public class SignIn extends AppCompatActivity {
 
 
     }
+
     private String convertHashToString(String text) {
         MessageDigest md = null;
         try {
@@ -65,64 +71,54 @@ public class SignIn extends AppCompatActivity {
 
     }
     @SuppressLint("WrongViewCast")
-    private void checkUser(){
-        if(numberPhone.getText().toString().equals("")){
+    private void checkUser() {
+        final CountryCodePicker ccp_su = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp_su.registerCarrierNumberEditText(numberPhone);
+        String phone = ccp_su.getFullNumberWithPlus().replace(" ", "");
+        String pass = password.getText().toString();
+        if (pass.isEmpty()) {
+            password.setError("Password not empty");
+        } else if (phone.isEmpty()) {
             numberPhone.setError("Number phone not empty");
-        }
-        else if(password.getText().toString().equals("")){
-            numberPhone.setError("Number phone not empty");
-        }
-        else{
-            final CountryCodePicker ccp_su = (CountryCodePicker) findViewById(R.id.ccp);
-            ccp_su.registerCarrierNumberEditText(numberPhone);
-            String phone = ccp_su.getFullNumberWithPlus().replace(" ", "");
 
-            final int[] typeUser = {1};
+        } else {
 
-            String pass = password.getText().toString();
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot data: snapshot.getChildren()){
-                        Users user = data.getValue(Users.class);
+                    boolean existUser = false;
+                    int typeUser = 1;
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Users user = dataSnapshot.getValue(Users.class);
+
                         String pass_convert = convertHashToString(pass);
-                        Log.e("User",user.getNumberphone());
+
+
                         if (phone.equals(user.getNumberphone()) && pass_convert.equals(user.getPassword())) {
                             if (user.getStatus().equals("0")) {
-                                typeUser[0] = 0;
+                                typeUser = 0;
                             } else {
-//                            SharedPreferences sharedPreferences = getSharedPreferences(saveUser, MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = sharedPreferences.edit();
-//                            editor.putString("numberPhone", phone);
-//                            editor.putString("password", pass);
-//                            editor.putBoolean("Save", checkSave.isChecked());
-//                            editor.commit();
-//                            existUser = true;
-//                            _user = user;
-//                            Log.e("user", _user.toString());
+                                SharedPreferences sharedPreferences = getSharedPreferences(saveUser, MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("numberPhone", phone);
+                                editor.putString("password", pass);
+                                editor.putBoolean("Save", checkSave.isChecked());
+                                editor.commit();
+                                existUser = true;
 
                                 Intent intent = new Intent(SignIn.this, HomePage.class);
                                 startActivity(intent);
-//                            if (getIntent().hasExtra("GetProductFromDeepLink")) {
-//                                Product temp = (Product) getIntent().getSerializableExtra("GetProductFromDeepLink");
-//                                Intent intent = new Intent(SignInActivity.this, ProductDetailActivity.class);
-//                                intent.putExtra("product", temp);
-//                                startActivityForResult(intent, 1);
-//                            } else if (_user.getTypeUser().equals("2")) {
-//                                Intent intent = new Intent(SignInActivity.this, AdminHomeActivity.class);
-//                                startActivity(intent);
-//                            } else {
-//                                Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-//                                startActivity(intent);
-//
+
                             }
+
                         }
 
-                        else{
-                            noticeNotExitUser(typeUser[0]);
-                        }
+                    }
+                    if (existUser == false) {
+
+                        noticeNotExitUser(typeUser);
                     }
                 }
 
@@ -133,7 +129,9 @@ public class SignIn extends AppCompatActivity {
             });
         }
 
+
     }
+
     private void noticeNotExitUser(int type) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -150,6 +148,7 @@ public class SignIn extends AppCompatActivity {
 
         alert.show();
     }
+
     private void initSignup() {
         regester.setOnClickListener(new View.OnClickListener() {
 
@@ -160,32 +159,56 @@ public class SignIn extends AppCompatActivity {
             }
         });
     }
+
     private void initForgotPassword() {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignIn.this, Regester.class);
+                Intent intent = new Intent(SignIn.this, ForgotPassword.class);
                 startActivity(intent);
             }
         });
     }
-    public void init(){
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_in);
+
         login = findViewById(R.id.idLogin);
         numberPhone = findViewById(R.id.numberPhone);
         password = findViewById(R.id.idPassword);
         regester = findViewById(R.id.idRegester);
         forgotPassword = findViewById(R.id.idForgotPassword);
 
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
-        init();
+        checkSave = (CheckBox) findViewById(R.id.checkBox);
         initSignup();
         initLogin();
         initForgotPassword();
 
+
+    }
+
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences(saveUser, MODE_PRIVATE);
+        String phone = sharedPreferences.getString("numberPhone", "");
+        String pass = sharedPreferences.getString("password", "");
+
+        boolean save = sharedPreferences.getBoolean("Save", false);
+        if (save == true) {
+            checkSave.setChecked(true);
+            numberPhone.setText(phone);
+            password.setText(pass);
+        }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Intent intent = new Intent(SignIn.this, HomePage.class);
+            startActivity(intent);
+        }
     }
 }

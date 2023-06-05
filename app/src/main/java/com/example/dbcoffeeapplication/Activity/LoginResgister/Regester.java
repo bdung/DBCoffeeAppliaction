@@ -34,77 +34,6 @@ public class Regester extends AppCompatActivity {
     private TextView login;
     public DatabaseReference databaseReference;
 
-    public void initRegester(){
-        regester.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createUser();
-            }
-        });
-    }
-    private void createUser(){
-        String phone = numberphone.getText().toString();
-        String name = username.getText().toString();
-        String pass = password.getText().toString();
-        String passAgain = passwordAgain.getText().toString();
-
-        if(phone.equals("")){
-            numberphone.setError("Please enter a phone number");
-        }
-        else if(name.equals("")){
-            username.setError("Please enter a username");
-        }
-        else if(pass.equals("")){
-            password.setError("Please enter a password");
-        }
-        else if(passAgain.equals("")){
-            passwordAgain.setError("Please enter a password again");
-        }
-        else if(!pass.equals(passAgain)){
-            passwordAgain.setError("Password incorrect");
-        }
-        else{
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault());
-            Date now = new Date();
-            String idUser = formatter.format(now);
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    boolean exitUser = false;
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        Users user = dataSnapshot.getValue(Users.class);
-                        if(user.getNumberphone().equals(phone)){
-                            noticeExitUser();
-                            exitUser = true;
-                            break;
-                        }
-                    }
-                    if(!exitUser){
-                        Intent intent = new Intent(Regester.this, OTPActivity.class);
-                        intent.putExtra("type_numberphone","signup");
-                        intent.putExtra("id",idUser);
-                        intent.putExtra("username", name);
-                        intent.putExtra("password", pass);
-
-                        startActivity(intent);
-                    }
-                    else{
-                        noticeExitUser();
-
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-        }
-    }
     private void noticeExitUser() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -142,13 +71,9 @@ public class Regester extends AppCompatActivity {
         init();
         initLogin();
 
-
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault());
         Date now = new Date();
         String idUser = formatter.format(now);
-
-
         regester.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

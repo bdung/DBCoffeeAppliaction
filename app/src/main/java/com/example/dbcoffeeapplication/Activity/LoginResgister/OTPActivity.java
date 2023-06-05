@@ -32,8 +32,6 @@ import java.util.concurrent.TimeUnit;
 
 public class OTPActivity extends AppCompatActivity {
 
-    EditText code1, code2, code3, code4;
-    String otp1, otp2,otp3, otp4;
     Button btnVerify;
     TextView txtErrorOtp, sendAgain;
     EditText otp;
@@ -59,9 +57,9 @@ public class OTPActivity extends AppCompatActivity {
         Log.e("type_numbephone",type_numbephone);
 
         phoneNumber = getIntent().getStringExtra("phoneNumber").toString();
-        Log.e("phoneNumber",phoneNumber);
+
         String OTP = otp.getText().toString();
-        Log.e("OTP",OTP);
+
 
         FirebaseAuth.getInstance().signOut();
         mAuth = FirebaseAuth.getInstance();
@@ -153,8 +151,9 @@ public class OTPActivity extends AppCompatActivity {
 
                             }
                             else if(type_numbephone.equals("forgotpassword")){
+                                String idUser = getIntent().getStringExtra("idUser").toString();
                                 Intent intent = new Intent(OTPActivity.this, ChangePasswordActivity.class);
-                                intent.putExtra("numberphone",phoneNumber);
+                                intent.putExtra("idUser",idUser);
                                 startActivity(intent);
 
                             }

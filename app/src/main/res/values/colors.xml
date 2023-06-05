@@ -2,6 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#07AA0E</color>
+    <color name="green">#018A18</color>
     <color name="green_hint">#A307AA0E</color>
 </resources>

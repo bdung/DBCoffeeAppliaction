@@ -13,6 +13,9 @@
         android:theme="@style/Theme.DBCoffeeApplication"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.LoginResgister.ForgotPassword"
+            android:exported="true" />
+        <activity
             android:name=".Activity.LoginResgister.ChangePasswordActivity"
             android:exported="true" />
         <activity
