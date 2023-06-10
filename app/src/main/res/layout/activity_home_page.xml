@@ -2,10 +2,139 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.HomePage.HomePage">
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".Activity.HomePage.HomePage"
+    tools:openDrawer="start">
+
+
+    <RelativeLayout
+        android:id="@+id/my_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="99dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_5sdp">
+
+                <ImageButton
+                    android:id="@+id/ic_cart"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_cart"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription,MissingConstraints" />
+
+                <!--                <com.nex3z.notificationbadge.NotificationBadge-->
+                <!--                    android:id="@+id/shopping_badge"-->
+                <!--                    android:layout_width="28dp"-->
+                <!--                    android:layout_height="28dp"-->
+                <!--                    android:scaleType="fitCenter"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/ic_cart"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@+id/ic_cart"-->
+                <!--                    app:layout_constraintStart_toStartOf="@+id/ic_cart"-->
+                <!--                    app:layout_constraintVertical_bias="0.0"-->
+                <!--                    app:layout_constraintHorizontal_bias="1.0"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    app:nbMaxTextLength="2"-->
+                <!--                    tools:ignore="MissingClass" />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_5sdp">
+
+                <!--                <ImageButton-->
+                <!--                    android:id="@+id/ic_notification"-->
+                <!--                    android:layout_width="48dp"-->
+                <!--                    android:layout_height="48dp"-->
+                <!--                    android:backgroundTint="@color/white"-->
+                <!--                    android:src="@drawable/ic_notifications"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    tools:ignore="ContentDescription,MissingConstraints" />-->
+
+                <!--                <com.nex3z.notificationbadge.NotificationBadge-->
+                <!--                    android:id="@+id/notification_badge"-->
+                <!--                    android:layout_width="28dp"-->
+                <!--                    android:layout_height="28dp"-->
+                <!--                    android:scaleType="fitCenter"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/ic_notification"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@+id/ic_notification"-->
+                <!--                    app:layout_constraintStart_toStartOf="@+id/ic_notification"-->
+                <!--                    app:layout_constraintVertical_bias="0.0"-->
+                <!--                    app:layout_constraintHorizontal_bias="1.0"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    app:nbMaxTextLength="2" />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="2"
+                android:background="@drawable/edittext_background"
+
+                android:queryHint="Search"
+                app:showAsAction="always" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <!--            <searchable xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--                android:label="@string/app_label"-->
+        <!--                android:hint="@string/search_hint" >-->
+        <!--            </searchable>-->
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_50sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_layout"
+    />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/nav_background"
+        style="@style/Widget.Design.BottomNavigationView"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/view_navbar"
+        tools:ignore="MissingConstraints">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

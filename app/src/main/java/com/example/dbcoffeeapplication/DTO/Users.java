@@ -118,4 +118,17 @@ public class Users {
     public void setStatus(String status) {
         this.status = status;
     }
+    public void ResetUser() {
+        this.id = "";
+        this.numberphone = "";
+        this.username = "";
+        this.password = "";
+        this.dob = "";
+        this.gender = "";
+        this.typeUser = "";
+        this.email = "";
+        this.avatar = "";
+        this.fullname = "";
+        this.status = "";
+    }
 }
